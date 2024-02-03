@@ -3,7 +3,7 @@ import type ICreditCard from "@mihnea.dev/credit-card-generator/dist/types/ICred
 
 const toast = useToast();
 
-const card = ref<ICreditCard | null>(generateCreditCard());
+const card = ref<ICreditCard | null>();
 
 function generateCard() {
 	const _card = generateCreditCard();
@@ -19,6 +19,10 @@ function generateCard() {
 		});
 	}
 }
+
+onMounted(() => {
+	card.value = generateCreditCard();
+});
 </script>
 
 <template>
