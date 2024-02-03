@@ -87,7 +87,7 @@ watchEffect(() => {
 </script>
 
 <template>
-	<div v-auto-animate>
+	<div>
 		<Transition>
 			<div
 				v-if="isMobile && isMenuOpen"
