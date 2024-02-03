@@ -10,6 +10,17 @@ function resetForm() {
 }
 
 async function shorten() {
+	if (!url.value) {
+		toast.add({
+			title: "Erro",
+			description: "Informe a URL a ser encurtada",
+			icon: "i-heroicons-x-circle",
+			color: "red",
+		});
+
+		return;
+	}
+
 	try {
 		const shortened = await useFetch<{ shortened: string }>(
 			"/api/encurtar",
