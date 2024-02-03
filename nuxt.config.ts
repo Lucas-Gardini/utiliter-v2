@@ -7,7 +7,7 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			// Meta tags padrão
-			title: "Título Padrão do Site",
+			title: "Utiliter - Utilidades para Desenvolvedores",
 			meta: [
 				{ charset: "utf-8" },
 				{
