@@ -19,21 +19,15 @@ function generateDocument() {
 	if (document) {
 		formData.generated = document;
 	} else {
-		if (formData.type === "") {
-			toast.add({
-				title: "Erro",
-				description: "Selecione um tipo de documento",
-				icon: "i-heroicons-x-circle",
-				color: "red",
-			});
-		} else {
-			toast.add({
-				title: "Erro",
-				description: "Não foi possível gerar o documento",
-				icon: "i-heroicons-x-circle",
-				color: "red",
-			});
-		}
+		toast.add({
+			title: "Erro",
+			description:
+				formData.type === ""
+					? "Selecione um tipo de documento"
+					: "Não foi possível gerar o documento",
+			icon: "i-heroicons-x-circle",
+			color: "red",
+		});
 	}
 }
 </script>
