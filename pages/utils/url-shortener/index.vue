@@ -29,6 +29,14 @@ async function shorten() {
 				shortened.data.value.shortened;
 
 			fallbackCopyTextToClipboard(shortenedUrl.value);
+
+			toast.add({
+				title: "Sucesso",
+				description:
+					"Lembre-se de que a URL encurtada expira em 60 dias!",
+				icon: "i-heroicons-check-circle",
+				color: "green",
+			});
 		} else {
 			toast.add({
 				title: "Erro",
