@@ -1,8 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: true },
-	modules: ["@formkit/auto-animate", "@nuxt/ui", "@nuxt/image"],
+	modules: [
+		"@formkit/auto-animate",
+		"@nuxt/ui",
+		"@nuxt/image",
+		"nuxt-mongoose",
+	],
 	css: ["assets/css/main.css"],
+
+	mongoose: {
+		uri: process.env.MONGODB_URI,
+		options: {},
+		modelsDir: "models",
+	},
 
 	app: {
 		head: {

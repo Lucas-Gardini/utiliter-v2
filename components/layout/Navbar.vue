@@ -17,13 +17,28 @@ const links = [
 	],
 	[
 		{
-			label: "Git",
+			label: "Geradores",
 			divider: true,
 		},
 		{
-			label: "Gerador de Commit",
+			label: "Commit",
 			icon: "i-heroicons-pencil-square",
-			to: "/git/commit-generator",
+			to: "/generators/commit-generator",
+		},
+		{
+			label: "CPF/CNPJ",
+			icon: "i-heroicons-clipboard-document-list",
+			to: "/generators/cpf-cnpj-generator",
+		},
+		{
+			label: "Cartão de Crédito",
+			icon: "i-heroicons-credit-card",
+			to: "/generators/credit-card-generator",
+		},
+		{
+			label: "Texto (lorem ipsum)",
+			icon: "i-heroicons-chat-bubble-bottom-center-text",
+			to: "/generators/lorem-ipsum-generator",
 		},
 	],
 	[
@@ -48,14 +63,25 @@ const links = [
 			to: "/encoders-decoders/base64-encoder-decoder",
 		},
 		{
-			label: "URL",
-			icon: "i-heroicons-link",
-			to: "/encoders-decoders/url-encoder-decoder",
-		},
-		{
 			label: "JWT",
 			icon: "i-heroicons-document-magnifying-glass",
 			to: "/encoders-decoders/jwt-encoder-decoder",
+		},
+		{
+			label: "URL",
+			icon: "i-heroicons-hashtag",
+			to: "/encoders-decoders/url-encoder-decoder",
+		},
+	],
+	[
+		{
+			label: "Utilitários",
+			divider: true,
+		},
+		{
+			label: "Encurtador de URL",
+			icon: "i-heroicons-link",
+			to: "/utils/url-shortener",
 		},
 	],
 	[

@@ -1,4 +1,6 @@
 export function fallbackCopyTextToClipboard(text: string) {
+	const toast = useToast();
+
 	var textArea = document.createElement("textarea");
 	textArea.value = text;
 
@@ -13,8 +15,20 @@ export function fallbackCopyTextToClipboard(text: string) {
 
 	try {
 		document.execCommand("copy");
+		toast.add({
+			title: "Copiado",
+			icon: "i-heroicons-clipboard",
+			description: "Texto copiado para a área de transferência.",
+		});
 	} catch (err) {
 		navigator.clipboard.writeText(text);
+
+		toast.add({
+			title: "Tentativa de cópia",
+			icon: "i-heroicons-clipboard",
+			description: "Texto copiado para a área de transferência.",
+			color: "orange",
+		});
 	}
 
 	document.body.removeChild(textArea);

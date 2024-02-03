@@ -20,13 +20,18 @@
     "daisyui": "^4.6.1",
     "nuxt": "^3.10.0",
     "nuxt-icon": "^0.6.8",
+    "nuxt-mongoose": "^1.0.5",
     "sass": "^1.70.0",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@brazilian-utils/brazilian-utils": "1.0.0-rc.12",
+    "@mihnea.dev/credit-card-generator": "^1.0.9",
     "@vercel/analytics": "^1.1.2",
+    "lorem-ipsum": "^2.0.8",
     "luxon": "^3.4.4",
+    "nanoid": "^5.0.5",
     "vkbeautify": "^0.99.3"
   }
 }
