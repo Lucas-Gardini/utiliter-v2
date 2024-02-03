@@ -120,7 +120,7 @@ watch(
 		</template>
 
 		<div class="min-h-32">
-			<div class="flex flex-col gap-1 w-full">
+			<div class="flex flex-col gap-1 w-full" v-auto-animate>
 				<h1 class="text-lg font-bold">Commits</h1>
 
 				<div
@@ -158,7 +158,7 @@ watch(
 			<div class="flex flex-col gap-1 w-full">
 				<h1 class="text-lg font-bold">Ajudantes</h1>
 
-				<div class="flex flex-col w-[100%]">
+				<div class="flex flex-col w-[100%]" v-auto-animate>
 					<div
 						class="flex flex-row w-full space-x-4"
 						v-for="(helper, i) in helps"

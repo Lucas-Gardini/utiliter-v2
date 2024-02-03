@@ -89,7 +89,7 @@ watch(
 					</div>
 				</div>
 
-				<div class="flex items-center space-x-4 flex-wrap">
+				<div class="flex items-center space-x-4 flex-wrap" v-auto-animate>
 					<div
 						v-if="formData.from === 'Customizado'"
 						class="form-control w-[45%]"

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const route = useRoute();
 const isMobile = ref(false);
 
 function checkMobileSize() {
@@ -12,12 +13,21 @@ onMounted(() => {
 </script>
 
 <template>
-	<main>
+	<main class="text-black dark:text-white bg-white dark:bg-[#121112]">
 		<LayoutNavbar :is-mobile="isMobile" />
 		<ThemeToggle />
 
 		<Suspense>
-			<div :class="!isMobile ? 'get-off-nav' : ''" class="app-content">
+			<div
+				:class="
+					!isMobile
+						? `get-off-nav ${
+								route.path !== '/' ? 'with-padding' : ''
+						  }`
+						: ''
+				"
+				class="app-content"
+			>
 				<NuxtPage />
 			</div>
 		</Suspense>
@@ -43,6 +53,8 @@ main > .app-content.get-off-nav {
 	top: 0;
 	transition: top 0.3s ease-in-out;
 
-	padding: 15px;
+	&.with-padding {
+		padding: 15px;
+	}
 }
 </style>

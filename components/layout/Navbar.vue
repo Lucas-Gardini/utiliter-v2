@@ -12,6 +12,7 @@ const links = [
 		{
 			label: "LOGO",
 			logo: true,
+			to: "/",
 		},
 	],
 	[
@@ -86,7 +87,7 @@ watchEffect(() => {
 </script>
 
 <template>
-	<div>
+	<div v-auto-animate>
 		<Transition>
 			<div
 				v-if="isMobile && isMenuOpen"
