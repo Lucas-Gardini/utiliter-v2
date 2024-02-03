@@ -25,7 +25,7 @@ function generateCard() {
 	<UCard>
 		<template #header>
 			<div class="h-8 font-black text-xl ml-10 sm:ml-0">
-				Gerador de CPF/CNPJ (powered by
+				Gerador de Cartão de Crédito (powered by
 				@mihnea.dev/credit-card-generator)
 			</div>
 		</template>
