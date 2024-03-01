@@ -15,4 +15,11 @@ export const prefixes = {
 	Testes: "test",
 };
 
+export const suffixes = {
+	feat: "Nova Funcionalidade",
+	fix: "Correção de Bug",
+	style: "Modificação de Estilo",
+	perf: "Melhoria de Performance",
+};
+
 export const prefixKeys = Object.keys(prefixes);

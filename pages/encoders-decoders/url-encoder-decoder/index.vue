@@ -6,6 +6,8 @@ const formData = reactive({
 	viewEncodedURL: "",
 });
 
+const selectedTab = ref(0);
+
 function resetForm() {
 	formData.encodedURL = "";
 	formData.viewDecodedURL = "";
@@ -59,7 +61,13 @@ watch(
 		</template>
 
 		<div class="min-h-32">
-			<div class="flex flex-col gap-1 w-full">
+			<UTabs
+				v-model="selectedTab"
+				:items="[{ label: 'Encoder' }, { label: 'Decoder' }]"
+				class="w-full mb-5"
+			></UTabs>
+
+			<div v-if="selectedTab === 0" class="flex flex-col gap-1 w-full">
 				<h1 class="text-lg font-bold">Encoder</h1>
 
 				<div class="flex items-center space-x-0 lg:space-x-4 flex-wrap">
@@ -70,6 +78,17 @@ watch(
 							v-model="formData.encodedURL"
 							icon="i-heroicons-receipt-percent"
 						/>
+
+						<UButton
+							color="sky"
+							variant="link"
+							class="ml-auto"
+							@click="
+								fallbackCopyTextToClipboard(formData.encodedURL)
+							"
+						>
+							Copiar
+						</UButton>
 					</div>
 
 					<div class="form-control w-[100%] lg:w-[49%]">
@@ -80,13 +99,26 @@ watch(
 							icon="i-heroicons-link"
 							disabled
 						/>
+
+						<UButton
+							color="sky"
+							variant="link"
+							class="ml-auto"
+							@click="
+								fallbackCopyTextToClipboard(
+									formData.viewDecodedURL
+								)
+							"
+						>
+							Copiar
+						</UButton>
 					</div>
 				</div>
 			</div>
 
-			<UDivider />
+			<!-- <UDivider /> -->
 
-			<div class="flex flex-col gap-1 w-full mt-[20px]">
+			<div v-else class="flex flex-col gap-1 w-full">
 				<h1 class="text-lg font-bold">Decoder</h1>
 
 				<div class="flex items-center space-x-0 lg:space-x-4 flex-wrap">
@@ -97,6 +129,17 @@ watch(
 							v-model="formData.decodedURL"
 							icon="i-heroicons-link"
 						/>
+
+						<UButton
+							color="sky"
+							variant="link"
+							class="ml-auto"
+							@click="
+								fallbackCopyTextToClipboard(formData.decodedURL)
+							"
+						>
+							Copiar
+						</UButton>
 					</div>
 
 					<div class="form-control w-[100%] lg:w-[49%]">
@@ -107,6 +150,19 @@ watch(
 							icon="i-heroicons-receipt-percent"
 							disabled
 						/>
+
+						<UButton
+							color="sky"
+							variant="link"
+							class="ml-auto"
+							@click="
+								fallbackCopyTextToClipboard(
+									formData.viewEncodedURL
+								)
+							"
+						>
+							Copiar
+						</UButton>
 					</div>
 				</div>
 			</div>

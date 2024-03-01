@@ -26,6 +26,11 @@ const links = [
 			to: "/generators/commit-generator",
 		},
 		{
+			label: "Hash",
+			icon: "i-heroicons-hashtag",
+			to: "/generators/hash-generator",
+		},
+		{
 			label: "CPF/CNPJ",
 			icon: "i-heroicons-clipboard-document-list",
 			to: "/generators/cpf-cnpj-generator",

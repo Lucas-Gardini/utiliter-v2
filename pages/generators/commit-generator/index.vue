@@ -41,6 +41,20 @@ function resetForm() {
 	commitMessage.value = "";
 }
 
+function quickAction(type: string) {
+	const lastIndex = commits.value.length - 1;
+
+	if (commits.value[lastIndex].type === "") {
+		commits.value[lastIndex].type = suffixes[type];
+	} else {
+		commits.value.push({
+			breakingChange: false,
+			message: "",
+			type: suffixes[type],
+		});
+	}
+}
+
 function generateCommit() {
 	const commit = commits.value
 		.filter((c) => c.type !== "")
@@ -64,7 +78,7 @@ function generateCommit() {
 
 	const _commitMessage = `${commit}\n\n${helpers}\n\n${obs.value}`;
 
-	fallbackCopyTextToClipboard(_commitMessage.trim());
+	fallbackCopyTextToClipboard(_commitMessage.trim(), true);
 	commitMessage.value = _commitMessage.trim();
 
 	toast.add({
@@ -121,11 +135,55 @@ watch(
 
 		<div class="min-h-32">
 			<div class="flex flex-col gap-1 w-full" v-auto-animate>
-				<h1 class="text-lg font-bold">Commits</h1>
+				<div class="flex flex-row items-center gap-10 mb-5">
+					<h1 class="text-lg font-bold">Commits</h1>
+
+					<div class="flex-row gap-5 items-center hidden sm:flex">
+						<UButton
+							icon="i-heroicons-rocket-launch"
+							size="md"
+							color="primary"
+							variant="link"
+							label="Funcionalidade"
+							:trailing="false"
+							@click="quickAction('feat')"
+						/>
+
+						<UButton
+							icon="i-heroicons-bug-ant"
+							size="md"
+							color="red"
+							variant="link"
+							label="Bug"
+							:trailing="false"
+							@click="quickAction('fix')"
+						/>
+
+						<UButton
+							icon="i-heroicons-paint-brush"
+							size="md"
+							color="pink"
+							variant="link"
+							label="Estilo"
+							:trailing="false"
+							@click="quickAction('style')"
+						/>
+
+						<UButton
+							icon="i-heroicons-cpu-chip"
+							size="md"
+							color="emerald"
+							variant="link"
+							label="Peformance"
+							:trailing="false"
+							@click="quickAction('perf')"
+						/>
+					</div>
+				</div>
 
 				<div
 					v-for="(commit, i) in commits"
-					class="flex items-center space-x-4 flex-wrap"
+					class="flex items-start space-x-4 flex-wrap"
 					:key="i"
 				>
 					<div class="form-control w-[40%] sm:w-[30%]">
@@ -141,17 +199,37 @@ watch(
 					<div class="form-control w-[50%]">
 						<label>Mensagem do commit</label>
 
-						<UInput
+						<UTextarea
 							v-model="commit.message"
 							icon="i-heroicons-document-text"
 						/>
+
+						<UButton
+							v-if="commit.message !== '' || commit.type !== ''"
+							color="red"
+							variant="link"
+							class="ml-auto"
+							@click="commit.message = ''"
+						>
+							Limpar
+						</UButton>
 					</div>
 
-					<UCheckbox
-						v-model="commit.breakingChange"
-						label="Breaking Change"
-						class="w-auto mt-[0px] sm:mt-[10px] mb-5 sm:mb-[2px]"
-					/>
+					<div class="form-control">
+						<label class="opacity-0">-</label>
+
+						<UCheckbox
+							v-model="commit.breakingChange"
+							label="Breaking Change"
+							class="w-auto mt-[0px] sm:mt-auto mb-5 sm:mb-auto"
+						/>
+
+						<UButton
+							v-if="commit.message !== '' || commit.type !== ''"
+							class="opacity-0"
+							>-</UButton
+						>
+					</div>
 				</div>
 			</div>
 
@@ -199,6 +277,15 @@ watch(
 				<div class="flex flex-col w-[100%]">
 					<UTextarea v-model="commitMessage" disabled />
 				</div>
+
+				<UButton
+					color="sky"
+					variant="link"
+					class="ml-auto"
+					@click="fallbackCopyTextToClipboard(commitMessage)"
+				>
+					Copiar
+				</UButton>
 			</div>
 		</div>
 

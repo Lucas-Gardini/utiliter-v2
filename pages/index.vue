@@ -11,7 +11,7 @@ const isOpen = ref(false);
 	>
 		<div class="hero-overlay bg-opacity-60"></div>
 		<div
-			class="hero-content text-center text-neutral-content mb-auto translate-y-1/2"
+			class="flex flex-col text-center text-neutral-content mb-auto mt-11 sm:mt-auto"
 		>
 			<div class="max-w-md">
 				<h1 class="mb-5 text-5xl font-bold">Bem vindo(a)!</h1>
@@ -37,11 +37,8 @@ const isOpen = ref(false);
 					/>
 				</UTooltip>
 			</div>
-		</div>
-		<footer
-			class="footer footer-center p-10 bg-white dark:bg-slate-900 mt-auto text-black dark:text-white"
-		>
-			<aside>
+
+			<aside class="flex flex-col items-center justify-center gap-5 mt-20">
 				<svg
 					width="50"
 					height="50"
@@ -66,7 +63,8 @@ const isOpen = ref(false);
 					<span>por Lucas Gardini Dias</span>
 				</div>
 			</nav>
-		</footer>
+		</div>
+		
 
 		<UModal v-model="isOpen">
 			<UCard
@@ -76,12 +74,12 @@ const isOpen = ref(false);
 				}"
 			>
 				<template #header>
-					<Placeholder class="text-black dark:text-white h-8">
+					<h1 class="text-black dark:text-white h-8">
 						Sobre mim | Entrar em contato
-					</Placeholder>
+					</h1>
 				</template>
 
-				<Placeholder
+				<div
 					class="flex flex-col gap-5 text-black dark:text-white min-h-32"
 				>
 					<p>
@@ -115,17 +113,17 @@ const isOpen = ref(false);
 						</p>
 					</p>
 
-				</Placeholder>
+				</div>
 
 				<template #footer>
-					<Placeholder class="flex h-8">
+					<div class="flex h-8">
 						<UButton
 							@click="isOpen = !isOpen"
 							class="bg-primary text-white ml-auto"
 						>
 							Fechar
 						</UButton>
-					</Placeholder>
+					</div>
 				</template>
 			</UCard>
 		</UModal>

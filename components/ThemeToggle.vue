@@ -8,10 +8,12 @@ const isDark = computed({
 		colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
 	},
 });
+
+const route = useRoute();
 </script>
 
 <template>
-	<div class="absolute top-0 right-0 z-50">
+	<div v-if="route.fullPath !== '/'" class="absolute top-0 right-0 z-50">
 		<ClientOnly>
 			<UButton
 				:icon="

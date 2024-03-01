@@ -6,6 +6,8 @@ const formData = reactive({
 	viewEncodedBase64: "",
 });
 
+const selectedTab = ref(0);
+
 function resetForm() {
 	formData.encodedBase64 = "";
 	formData.viewDecodedBase64 = "";
@@ -84,8 +86,16 @@ watch(
 		</template>
 
 		<div class="min-h-32">
-			<div class="flex flex-col gap-1 w-full">
-				<h1 class="text-lg font-bold">Encoder</h1>
+			<UTabs
+				v-model="selectedTab"
+				:items="[{ label: 'Encoder' }, { label: 'Decoder' }]"
+				class="w-full mb-5"
+			></UTabs>
+
+			<div v-if="selectedTab === 0" class="flex flex-col gap-1 w-full">
+				<h1 class="text-lg font-bold">
+					Encoder (texto ou arquivo para base64)
+				</h1>
 
 				<div class="flex items-center flex-wrap">
 					<div class="form-control w-[100%]">
@@ -144,10 +154,12 @@ watch(
 				</div>
 			</div>
 
-			<UDivider />
+			<!-- <UDivider /> -->
 
-			<div class="flex flex-col gap-1 w-full mt-[20px]">
-				<h1 class="text-lg font-bold">Decoder</h1>
+			<div v-else class="flex flex-col gap-1 w-full">
+				<h1 class="text-lg font-bold">
+					Decoder (base64 para texto ou arquivo)
+				</h1>
 
 				<div class="flex items-center flex-wrap">
 					<div class="form-control w-[100%]">

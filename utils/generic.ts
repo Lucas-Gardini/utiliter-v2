@@ -1,4 +1,7 @@
-export function fallbackCopyTextToClipboard(text: string) {
+export function fallbackCopyTextToClipboard(
+	text: string,
+	disableNotification: boolean = false
+) {
 	const toast = useToast();
 
 	var textArea = document.createElement("textarea");
@@ -15,20 +18,23 @@ export function fallbackCopyTextToClipboard(text: string) {
 
 	try {
 		document.execCommand("copy");
-		toast.add({
-			title: "Copiado",
-			icon: "i-heroicons-clipboard",
-			description: "Texto copiado para a área de transferência.",
-		});
+
+		if (!disableNotification)
+			toast.add({
+				title: "Copiado",
+				icon: "i-heroicons-clipboard",
+				description: "Texto copiado para a área de transferência.",
+			});
 	} catch (err) {
 		navigator.clipboard.writeText(text);
 
-		toast.add({
-			title: "Tentativa de cópia",
-			icon: "i-heroicons-clipboard",
-			description: "Texto copiado para a área de transferência.",
-			color: "orange",
-		});
+		if (!disableNotification)
+			toast.add({
+				title: "Tentativa de cópia",
+				icon: "i-heroicons-clipboard",
+				description: "Texto copiado para a área de transferência.",
+				color: "orange",
+			});
 	}
 
 	document.body.removeChild(textArea);
