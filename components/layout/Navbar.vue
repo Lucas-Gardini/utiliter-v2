@@ -47,6 +47,11 @@ const links = [
 			to: "/generators/hash-generator",
 		},
 		{
+			label: "Senha",
+			icon: "i-heroicons-key",
+			to: "/generators/password",
+		},
+		{
 			label: "CPF/CNPJ",
 			icon: "i-heroicons-clipboard-document-list",
 			to: "/generators/cpf-cnpj-generator",
@@ -123,7 +128,7 @@ watchEffect(() => {
 </script>
 
 <template>
-	<div>
+	<div class="overflow-y-auto bg-white dark:bg-slate-900">
 		<Transition>
 			<div
 				v-if="isMobile && isMenuOpen"
@@ -168,7 +173,7 @@ watchEffect(() => {
 					? `floating pt-12 ${isMenuOpen ? 'opened' : ''}`
 					: 'normal'
 			"
-			class="bg-white dark:bg-slate-900 min-w-[75%] max-w-[75%] sm:min-w-[250px] sm:max-w-[250px] pt-0 sm:pt-5 sm:pl-1 sm:pr-1 h-screen"
+			class="min-w-[75%] max-w-[75%] sm:min-w-[250px] sm:max-w-[250px] pt-0 sm:pt-5 sm:pl-1 sm:pr-1 h-screen"
 		>
 			<template #icon="{ link }">
 				<div
@@ -179,7 +184,11 @@ watchEffect(() => {
 					<img src="/logo.png" alt="Logo" class="h-12 w-12" />
 					<h1 class="font-black dark:text-white">Utiliter</h1>
 				</div>
-				<div v-else class="flex items-center my-auto">
+				<div
+					v-else
+					:style="link.label === 'SQL' ? 'padding-bottom: 30px;' : ''"
+					class="flex items-center my-auto"
+				>
 					<span
 						v-html="!link.divider ? '&nbsp;&nbsp;&nbsp;&nbsp;' : ''"
 					></span>
@@ -190,6 +199,7 @@ watchEffect(() => {
 			<template #default="{ link }">
 				<span
 					v-if="!link.logo"
+					:style="link.label === 'SQL' ? 'padding-bottom: 30px;' : ''"
 					:class="
 						!link.divider
 							? 'group-hover:text-primary relative'
