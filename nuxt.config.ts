@@ -7,7 +7,7 @@ export default defineNuxtConfig({
 		"@nuxt/image",
 		"nuxt-mongoose",
 	],
-	css: ["assets/css/main.css"],
+	css: ["assets/css/main.css", "vue-accessible-color-picker/styles"],
 
 	mongoose: {
 		uri: process.env.MONGODB_URI,

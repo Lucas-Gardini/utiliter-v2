@@ -88,6 +88,11 @@ const links = [
 			icon: "i-heroicons-link",
 			to: "/utils/url-shortener",
 		},
+		{
+			label: "Proporção de Contraste",
+			icon: "i-heroicons-swatch",
+			to: "/utils/contrast-ratio",
+		},
 	],
 	[
 		{
