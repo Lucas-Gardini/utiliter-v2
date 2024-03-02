@@ -76,7 +76,9 @@ function generateCommit() {
 		})
 		.join("\n");
 
-	const _commitMessage = `${commit}\n\n${helpers}\n\n${obs.value}`;
+	const _commitMessage = `${commit}\n\n${
+		obs.value.length > 0 ? `${obs.value}\n\n` : ""
+	}${helpers}`;
 
 	fallbackCopyTextToClipboard(_commitMessage.trim(), true);
 	commitMessage.value = _commitMessage.trim();
@@ -275,7 +277,13 @@ watch(
 				<h1 class="text-lg font-bold">Mensagem de Commit</h1>
 
 				<div class="flex flex-col w-[100%]">
-					<UTextarea v-model="commitMessage" disabled />
+					<UTextarea
+						v-model="commitMessage"
+						:rows="8"
+						max-rows="12"
+						grow
+						disabled
+					/>
 				</div>
 
 				<UButton
