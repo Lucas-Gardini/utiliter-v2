@@ -148,7 +148,9 @@ async function generateHash() {
 							color="sky"
 							variant="link"
 							class="ml-auto"
-							@click="generateHash"
+							@click="
+								fallbackCopyTextToClipboard(formData.generated)
+							"
 						>
 							Copiar
 						</UButton>
