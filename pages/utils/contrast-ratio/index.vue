@@ -68,7 +68,7 @@ onMounted(() => {
 		<div class="min-h-32">
 			<div class="flex flex-col gap-1 w-full" v-auto-animate>
 				<div class="flex flex-row items-start gap-4 flex-wrap">
-					<div class="form-control min-w-[30%]">
+					<div class="form-control min-w-[30%] text-black">
 						<ColorPicker
 							:color="selectedColor1"
 							@color-change="
@@ -76,11 +76,12 @@ onMounted(() => {
 							"
 							defaultFormat="hex"
 							alpha-channel="hide"
+							:visibleFormats="['hex']"
 						>
 						</ColorPicker>
 					</div>
 
-					<div class="form-control min-w-[30%]">
+					<div class="form-control min-w-[30%] text-black">
 						<ColorPicker
 							:color="selectedColor2"
 							@color-change="
@@ -88,6 +89,7 @@ onMounted(() => {
 							"
 							defaultFormat="hex"
 							alpha-channel="hide"
+							:visibleFormats="['hex']"
 						/>
 					</div>
 
@@ -95,6 +97,15 @@ onMounted(() => {
 						class="flex flex-col items-center justify-center h-full min-w-[30%] mt-auto mb-auto"
 					>
 						<h1 class="text-lg">Proporção de Contraste</h1>
+						<h2>
+							<span :style="`color: ${selectedColor1}`">{{
+								selectedColor1
+							}}</span>
+							<span> | </span>
+							<span :style="`color: ${selectedColor2}`">{{
+								selectedColor2
+							}}</span>
+						</h2>
 
 						<h2
 							class="text-4xl flex flex-row justify-center items-center gap-5"

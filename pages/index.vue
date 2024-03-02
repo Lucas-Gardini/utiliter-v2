@@ -24,7 +24,6 @@ const isOpen = ref(false);
 
 					Toda opinião é bem-vinda! Por isso, sinta-se à vontade para
 					me enviar um e-mail com sugestões de melhorias.
-					[contato@lucasgardini.com]
 				</p>
 
 				<UTooltip text="Sobre mim" :popper="{ arrow: true }">
