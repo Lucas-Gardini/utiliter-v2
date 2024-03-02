@@ -1,38 +1,66 @@
 <script setup lang="ts">
+import { Types } from "mongoose";
+import { v4 } from "uuid";
+
 const toast = useToast();
 
 const formData = reactive({
-	type: "md5" as "md5" | "sha1" | "sha256" | "sha512",
+	text: "",
+	type: "SHA-1" as "SHA-1" | "SHA-256" | "SHA-512" | "ObjectId" | "uuid",
 	output: "minúsculo",
-	wordsPerParagraph: 100,
-	characters: 1000,
 	generated: "",
 });
 
 function resetForm() {
-	formData.type = "md5";
+	formData.type = "SHA-1";
 	formData.output = "minúsculo";
-	formData.characters = 1000;
+	formData.text = "";
 	formData.generated = "";
 }
 
-async function generateHash() {
-	// text: string,
-	// type: "md5" | "sha1" | "sha256" | "sha512",
-	// digest: "hex" | "base64"
-	try {
-		const text = "teste";
-		const type = "MD5";
-		const digest = formData.output === "base64" ? "base64" : "hex";
+async function calculateHash(
+	text: string,
+	digest: "SHA-1" | "SHA-256" | "SHA-512" | "ObjectId" | "uuid"
+) {
+	if (digest === "ObjectId") {
+		formData.text = "";
 
-		alert(text);
-		alert(type);
-		const hash = await crypto.subtle.digest(
-			type,
-			new TextEncoder().encode(text)
-		);
+		const objectId = new Types.ObjectId();
+		return objectId.toString();
+	}
+
+	if (digest === "uuid") {
+		formData.text = "";
+
+		const uuid = v4();
+		return uuid;
+	}
+
+	const codificador = new TextEncoder();
+	const bufferDados = codificador.encode(text);
+	const bufferHash = await window.crypto.subtle.digest(digest, bufferDados);
+	const arrayHash = Array.from(new Uint8Array(bufferHash));
+	const hashHex = arrayHash
+		.map((byte) => byte.toString(16).padStart(2, "0"))
+		.join("");
+	return hashHex;
+}
+
+async function generateHash() {
+	try {
+		const text = formData.text;
+		const digest = formData.type;
+		const output = formData.output;
+
+		const hash = await calculateHash(text, digest);
 		if (hash) {
-			formData.generated = Buffer.from(hash).toString(digest);
+			if (output === "base64") {
+				formData.generated = btoa(hash);
+				return;
+			}
+
+			formData.generated =
+				output === "maiúsculo" ? hash.toUpperCase() : hash;
 		} else {
 			toast.add({
 				title: "Erro",
@@ -57,7 +85,7 @@ async function generateHash() {
 	<UCard>
 		<template #header>
 			<div class="h-8 font-black text-xl ml-10 sm:ml-0">
-				Gerador de Texto (lorem ipsum)
+				Gerador de Hash
 			</div>
 		</template>
 
@@ -69,7 +97,13 @@ async function generateHash() {
 
 						<USelect
 							v-model="formData.type"
-							:options="['md5', 'sha1', 'sha256', 'sha512']"
+							:options="[
+								'SHA-1',
+								'SHA-256',
+								'SHA-512',
+								'ObjectId',
+								'uuid',
+							]"
 							icon="i-heroicons-wrench-screwdriver"
 						/>
 					</div>
@@ -79,8 +113,21 @@ async function generateHash() {
 
 						<USelect
 							v-model="formData.output"
-							:options="['maiúsculo', 'minúsculo', 'base64']"
+							:options="['minúsculo', 'maiúsculo', 'base64']"
 							icon="i-heroicons-arrows-up-down"
+						/>
+					</div>
+				</div>
+
+				<div class="flex items-center gap-4 flex-wrap">
+					<div class="form-control w-full">
+						<label>Entrada</label>
+
+						<UTextarea
+							v-model="formData.text"
+							:rows="1"
+							max-rows="3"
+							grow="true"
 						/>
 					</div>
 				</div>
