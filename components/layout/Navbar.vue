@@ -17,6 +17,22 @@ const links = [
 	],
 	[
 		{
+			label: "Utilitários",
+			divider: true,
+		},
+		{
+			label: "Encurtador de URL",
+			icon: "i-heroicons-link",
+			to: "/utils/url-shortener",
+		},
+		{
+			label: "Proporção de Contraste",
+			icon: "i-heroicons-swatch",
+			to: "/utils/contrast-ratio",
+		},
+	],
+	[
+		{
 			label: "Geradores",
 			divider: true,
 		},
@@ -76,22 +92,6 @@ const links = [
 			label: "URL",
 			icon: "i-heroicons-hashtag",
 			to: "/encoders-decoders/url-encoder-decoder",
-		},
-	],
-	[
-		{
-			label: "Utilitários",
-			divider: true,
-		},
-		{
-			label: "Encurtador de URL",
-			icon: "i-heroicons-link",
-			to: "/utils/url-shortener",
-		},
-		{
-			label: "Proporção de Contraste",
-			icon: "i-heroicons-swatch",
-			to: "/utils/contrast-ratio",
 		},
 	],
 	[
