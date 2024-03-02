@@ -98,13 +98,9 @@ onMounted(() => {
 					>
 						<h1 class="text-lg">Proporção de Contraste</h1>
 						<h2>
-							<span :style="`color: ${selectedColor1}`">{{
-								selectedColor1
-							}}</span>
+							<span>{{ selectedColor1 }}</span>
 							<span> | </span>
-							<span :style="`color: ${selectedColor2}`">{{
-								selectedColor2
-							}}</span>
+							<span>{{ selectedColor2 }}</span>
 						</h2>
 
 						<h2
