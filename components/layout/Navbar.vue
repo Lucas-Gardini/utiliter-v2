@@ -30,6 +30,11 @@ const links = [
 			icon: "i-heroicons-swatch",
 			to: "/utils/contrast-ratio",
 		},
+		{
+			label: "Calculadora de Tempo Trabalhado",
+			icon: "i-heroicons-clock",
+			to: "/utils/time-calculator",
+		},
 	],
 	[
 		{
@@ -130,11 +135,7 @@ watchEffect(() => {
 <template>
 	<div class="overflow-y-auto bg-white dark:bg-slate-900">
 		<Transition>
-			<div
-				v-if="isMobile && isMenuOpen"
-				class="fixed inset-0 bg-black bg-opacity-50 z-50"
-				@click="isMenuOpen = false"
-			></div>
+			<div v-if="isMobile && isMenuOpen" class="fixed inset-0 bg-black bg-opacity-50 z-50" @click="isMenuOpen = false"></div>
 		</Transition>
 
 		<UButton
@@ -146,13 +147,7 @@ watchEffect(() => {
 			@click="isMenuOpen = !isMenuOpen"
 			size="xl"
 			class="bg-primary"
-			style="
-				position: fixed;
-				border-top-left-radius: 0px;
-				border-top-right-radius: 0px;
-				border-bottom-left-radius: 0px;
-				z-index: 101;
-			"
+			style="position: fixed; border-top-left-radius: 0px; border-top-right-radius: 0px; border-bottom-left-radius: 0px; z-index: 101"
 		/>
 
 		<UVerticalNavigation
@@ -168,30 +163,16 @@ watchEffect(() => {
 				inactive:
 					'border-transparent hover:border-gray-400 dark:hover:border-gray-500 text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300',
 			}"
-			:class="
-				isMobile
-					? `floating pt-12 ${isMenuOpen ? 'opened' : ''}`
-					: 'normal'
-			"
+			:class="isMobile ? `floating pt-12 ${isMenuOpen ? 'opened' : ''}` : 'normal'"
 			class="min-w-[75%] max-w-[75%] sm:min-w-[250px] sm:max-w-[250px] pt-0 sm:pt-5 sm:pl-1 sm:pr-1 h-screen"
 		>
 			<template #icon="{ link }">
-				<div
-					v-if="link.logo"
-					class="flex flex-row items-center gap-5 text-xl"
-					:class="isMobile ? 'pt-16' : ''"
-				>
+				<div v-if="link.logo" class="flex flex-row items-center gap-5 text-xl" :class="isMobile ? 'pt-16' : ''">
 					<img src="/logo.png" alt="Logo" class="h-12 w-12" />
 					<h1 class="font-black dark:text-white">Utiliter</h1>
 				</div>
-				<div
-					v-else
-					:style="link.label === 'SQL' ? 'padding-bottom: 30px;' : ''"
-					class="flex items-center my-auto"
-				>
-					<span
-						v-html="!link.divider ? '&nbsp;&nbsp;&nbsp;&nbsp;' : ''"
-					></span>
+				<div v-else :style="link.label === 'SQL' ? 'padding-bottom: 30px;' : ''" class="flex items-center my-auto">
+					<span v-html="!link.divider ? '&nbsp;&nbsp;&nbsp;&nbsp;' : ''"></span>
 					<UIcon :name="link.icon" class="text-base" />
 				</div>
 			</template>
