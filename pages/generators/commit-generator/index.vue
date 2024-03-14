@@ -1,9 +1,7 @@
 <script setup lang="ts">
 const toast = useToast();
 
-const commits = ref<
-	Array<{ type: string; message: string; breakingChange: boolean }>
->([
+const commits = ref<Array<{ type: string; message: string; breakingChange: boolean }>>([
 	{
 		breakingChange: false,
 		message: "",
@@ -45,12 +43,12 @@ function quickAction(type: string) {
 	const lastIndex = commits.value.length - 1;
 
 	if (commits.value[lastIndex].type === "") {
-		commits.value[lastIndex].type = suffixes[type];
+		commits.value[lastIndex].type = (suffixes as any)[type];
 	} else {
 		commits.value.push({
 			breakingChange: false,
 			message: "",
-			type: suffixes[type],
+			type: (suffixes as any)[type],
 		});
 	}
 }
@@ -61,9 +59,7 @@ function generateCommit() {
 		.map((c) => {
 			const breakingChange = c.breakingChange ? "!" : "";
 
-			return `${
-				prefixes[c.type as keyof typeof prefixes]
-			}${breakingChange}: ${c.message}`;
+			return `${prefixes[c.type as keyof typeof prefixes]}${breakingChange}: ${c.message}`;
 		})
 		.join("\n");
 
@@ -76,9 +72,7 @@ function generateCommit() {
 		})
 		.join("\n");
 
-	const _commitMessage = `${commit}\n\n${
-		obs.value.length > 0 ? `${obs.value}\n\n` : ""
-	}${helpers}`;
+	const _commitMessage = `${commit}\n\n${obs.value.length > 0 ? `${obs.value}\n\n` : ""}${helpers}`;
 
 	fallbackCopyTextToClipboard(_commitMessage.trim(), true);
 	commitMessage.value = _commitMessage.trim();
@@ -86,8 +80,7 @@ function generateCommit() {
 	toast.add({
 		title: "Mensagem de commit copiada",
 		icon: "i-heroicons-clipboard",
-		description:
-			"A mensagem de commit foi copiada para a área de transferência",
+		description: "A mensagem de commit foi copiada para a área de transferência",
 	});
 }
 
@@ -130,9 +123,7 @@ watch(
 <template>
 	<UCard>
 		<template #header>
-			<div class="h-8 font-black text-xl ml-10 sm:ml-0">
-				Gerador de Commit
-			</div>
+			<div class="h-8 font-black text-xl ml-10 sm:ml-0">Gerador de Commit</div>
 		</template>
 
 		<div class="min-h-32">
@@ -183,28 +174,17 @@ watch(
 					</div>
 				</div>
 
-				<div
-					v-for="(commit, i) in commits"
-					class="flex items-start space-x-4 flex-wrap"
-					:key="i"
-				>
+				<div v-for="(commit, i) in commits" class="flex items-start space-x-4 flex-wrap" :key="i">
 					<div class="form-control w-[40%] sm:w-[30%]">
 						<label>Tipo do commit</label>
 
-						<USelect
-							v-model="commit.type"
-							:options="prefixKeys"
-							icon="i-heroicons-bolt"
-						/>
+						<USelect v-model="commit.type" :options="prefixKeys" icon="i-heroicons-bolt" />
 					</div>
 
 					<div class="form-control w-[50%]">
 						<label>Mensagem do commit</label>
 
-						<UTextarea
-							v-model="commit.message"
-							icon="i-heroicons-document-text"
-						/>
+						<UTextarea v-model="commit.message" icon="i-heroicons-document-text" />
 
 						<UButton
 							v-if="commit.message !== '' || commit.type !== ''"
@@ -220,17 +200,9 @@ watch(
 					<div class="form-control">
 						<label class="opacity-0">-</label>
 
-						<UCheckbox
-							v-model="commit.breakingChange"
-							label="Breaking Change"
-							class="w-auto mt-[0px] sm:mt-auto mb-5 sm:mb-auto"
-						/>
+						<UCheckbox v-model="commit.breakingChange" label="Breaking Change" class="w-auto mt-[0px] sm:mt-auto mb-5 sm:mb-auto" />
 
-						<UButton
-							v-if="commit.message !== '' || commit.type !== ''"
-							class="opacity-0"
-							>-</UButton
-						>
+						<UButton v-if="commit.message !== '' || commit.type !== ''" class="opacity-0">-</UButton>
 					</div>
 				</div>
 			</div>
@@ -239,27 +211,17 @@ watch(
 				<h1 class="text-lg font-bold">Ajudantes</h1>
 
 				<div class="flex flex-col w-[100%]" v-auto-animate>
-					<div
-						class="flex flex-row w-full space-x-4"
-						v-for="(helper, i) in helps"
-						:key="i"
-					>
+					<div class="flex flex-row w-full space-x-4" v-for="(helper, i) in helps" :key="i">
 						<div class="form-control min-w-[30%]">
 							<label>Nome</label>
 
-							<UInput
-								v-model="helper.name"
-								icon="i-heroicons-user"
-							/>
+							<UInput v-model="helper.name" icon="i-heroicons-user" />
 						</div>
 
 						<div class="form-control min-w-[50%]">
 							<label>Email</label>
 
-							<UInput
-								v-model="helper.email"
-								icon="i-heroicons-envelope"
-							/>
+							<UInput v-model="helper.email" icon="i-heroicons-envelope" />
 						</div>
 					</div>
 				</div>
@@ -277,23 +239,10 @@ watch(
 				<h1 class="text-lg font-bold">Mensagem de Commit</h1>
 
 				<div class="flex flex-col w-[100%]">
-					<UTextarea
-						v-model="commitMessage"
-						:rows="8"
-						max-rows="12"
-						grow
-						disabled
-					/>
+					<UTextarea v-model="commitMessage" :rows="8" max-rows="12" grow disabled />
 				</div>
 
-				<UButton
-					color="sky"
-					variant="link"
-					class="ml-auto"
-					@click="fallbackCopyTextToClipboard(commitMessage)"
-				>
-					Copiar
-				</UButton>
+				<UButton color="sky" variant="link" class="ml-auto" @click="fallbackCopyTextToClipboard(commitMessage)"> Copiar </UButton>
 			</div>
 		</div>
 

@@ -31,7 +31,7 @@ const links = [
 			to: "/utils/contrast-ratio",
 		},
 		{
-			label: "Calculadora de Tempo Trabalhado",
+			label: "Calculadora de Tempo",
 			icon: "i-heroicons-clock",
 			to: "/utils/time-calculator",
 		},
