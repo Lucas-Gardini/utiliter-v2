@@ -19,10 +19,10 @@ const baseUrl = "https://api.whatsapp.com/send?phone=";
 function generateLink() {
 	const { countryCode, ddd, phone } = formData;
 
-	if (!countryCode || !ddd || !phone) {
+	if (!phone) {
 		toast.add({
 			title: "Erro",
-			description: "Preencha todos os campos",
+			description: "Preencha o telefone!",
 			icon: "i-heroicons-x-circle",
 			color: "red",
 		});
@@ -32,6 +32,12 @@ function generateLink() {
 	const fullPhone = `${countryCode}${ddd}${phone}`;
 
 	formData.generated = `${baseUrl}${fullPhone}`;
+}
+
+function openLink() {
+	generateLink();
+
+	if (formData.generated) window.open(formData.generated, "_blank");
 }
 </script>
 
@@ -44,7 +50,7 @@ function generateLink() {
 		<div class="min-h-32">
 			<div class="flex flex-col gap-1 w-full" v-auto-animate>
 				<div class="flex items-center gap-4 flex-wrap sm:flex-nowrap">
-					<div class="form-control min-w-[50px] max-w-[130px]">
+					<!-- <div class="form-control min-w-[50px] max-w-[130px]">
 						<label>Código do País</label>
 
 						<UInput v-model="formData.countryCode" icon="i-heroicons-plus" />
@@ -54,7 +60,7 @@ function generateLink() {
 						<label>DDD</label>
 
 						<UInput v-model="formData.ddd" icon="i-heroicons-flag" />
-					</div>
+					</div> -->
 
 					<div class="form-control w-[100%]">
 						<label>Número de telefone</label>
@@ -88,6 +94,17 @@ function generateLink() {
 					style="color: white"
 					:trailing="false"
 					@click="resetForm"
+				/>
+
+				<UButton
+					icon="i-heroicons-arrow-top-right-on-square"
+					size="md"
+					color="orange"
+					variant="solid"
+					label="Abrir"
+					style="color: white"
+					:trailing="false"
+					@click="openLink"
 				/>
 
 				<UButton
