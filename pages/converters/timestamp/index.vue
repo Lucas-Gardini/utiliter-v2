@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { DateTime } from "luxon";
 
-const toast = useToast();
-
 const formData = reactive({
 	from: "",
 	to: "",
@@ -29,25 +27,16 @@ watch(
 		let date;
 
 		if (formData.from === "Customizado") {
-			date = DateTime.fromFormat(
-				formData.date,
-				formData.customFromFormat
-			);
+			date = DateTime.fromFormat(formData.date, formData.customFromFormat);
 		} else {
-			date = parseDate(
-				formData.date,
-				timestampsFrom[formData.from as keyof typeof timestampsFrom]
-			);
+			date = parseDate(formData.date, timestampsFrom[formData.from as keyof typeof timestampsFrom]);
 		}
 
 		if (formData.to === "Customizado") {
 			if (date) formData.result = date.toFormat(formData.customToFormat);
 		} else {
 			if (date) {
-				formData.result = formatDate(
-					date,
-					timestampsTo[formData.to as keyof typeof timestampsTo]
-				)?.toString()!;
+				formData.result = formatDate(date, timestampsTo[formData.to as keyof typeof timestampsTo])?.toString()!;
 			}
 		}
 	},
@@ -58,9 +47,7 @@ watch(
 <template>
 	<UCard>
 		<template #header>
-			<div class="h-8 font-black text-xl ml-10 sm:ml-0">
-				Conversor de Data e Timestamp
-			</div>
+			<div class="h-8 font-black text-xl ml-10 sm:ml-0">Conversor de Data e Timestamp</div>
 		</template>
 
 		<div class="min-h-32">
@@ -71,52 +58,28 @@ watch(
 					<div class="form-control w-[45%]">
 						<label>De</label>
 
-						<USelect
-							v-model="formData.from"
-							:options="timestampKeys"
-							icon="i-heroicons-bolt"
-						/>
+						<USelect v-model="formData.from" :options="timestampKeys" icon="i-heroicons-bolt" />
 					</div>
 
 					<div class="form-control w-[45%]">
 						<label>Para</label>
 
-						<USelect
-							v-model="formData.to"
-							:options="timestampToKeys"
-							icon="i-heroicons-bolt"
-						/>
+						<USelect v-model="formData.to" :options="timestampToKeys" icon="i-heroicons-bolt" />
 					</div>
 				</div>
 
 				<div class="flex items-center space-x-4 flex-wrap" v-auto-animate>
-					<div
-						v-if="formData.from === 'Customizado'"
-						class="form-control w-[45%]"
-					>
-						<label>
-							Formato Personalizado (ex: dd/MM/yyyy HH:mm:ss)
-						</label>
+					<div v-if="formData.from === 'Customizado'" class="form-control w-[45%]">
+						<label> Formato Personalizado (ex: dd/MM/yyyy HH:mm:ss) </label>
 
-						<UInput
-							v-model="formData.customFromFormat"
-							icon="i-heroicons-document-text"
-						/>
+						<UInput v-model="formData.customFromFormat" icon="i-heroicons-document-text" />
 					</div>
 					<div v-else class="w-[45%]" />
 
-					<div
-						v-if="formData.to === 'Customizado'"
-						class="form-control w-[45%]"
-					>
-						<label>
-							Formato Personalizado (ex: dd/MM/yyyy HH:mm:ss)
-						</label>
+					<div v-if="formData.to === 'Customizado'" class="form-control w-[45%]">
+						<label> Formato Personalizado (ex: dd/MM/yyyy HH:mm:ss) </label>
 
-						<UInput
-							v-model="formData.customToFormat"
-							icon="i-heroicons-document-text"
-						/>
+						<UInput v-model="formData.customToFormat" icon="i-heroicons-document-text" />
 					</div>
 					<div v-else class="w-[45%]" />
 				</div>
@@ -129,20 +92,13 @@ watch(
 					<div class="form-control w-[30%]">
 						<label>Data</label>
 
-						<UInput
-							v-model="formData.date"
-							icon="i-heroicons-document-text"
-						/>
+						<UInput v-model="formData.date" icon="i-heroicons-document-text" />
 					</div>
 
 					<div class="form-control w-[30%]">
 						<label>Resultado</label>
 
-						<UInput
-							v-model="formData.result"
-							disabled
-							icon="i-heroicons-document-text"
-						/>
+						<UInput v-model="formData.result" disabled icon="i-heroicons-document-text" />
 					</div>
 				</div>
 			</div>

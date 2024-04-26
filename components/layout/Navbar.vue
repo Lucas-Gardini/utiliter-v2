@@ -71,6 +71,11 @@ const links = [
 			icon: "i-heroicons-chat-bubble-bottom-center-text",
 			to: "/generators/lorem-ipsum-generator",
 		},
+		{
+			label: "Link do WhatsApp",
+			icon: "ph:whatsapp-logo-light",
+			to: "/generators/whatsapp",
+		},
 	],
 	[
 		{
@@ -173,7 +178,8 @@ watchEffect(() => {
 				</div>
 				<div v-else :style="link.label === 'SQL' ? 'padding-bottom: 30px;' : ''" class="flex items-center my-auto">
 					<span v-html="!link.divider ? '&nbsp;&nbsp;&nbsp;&nbsp;' : ''"></span>
-					<UIcon :name="link.icon" class="text-base" />
+					<UIcon v-if="link.icon && link.icon.startsWith('i-')" :name="link.icon" class="text-base" />
+					<Icon v-else-if="link.icon" :name="link.icon" class="text-base" />
 				</div>
 			</template>
 
