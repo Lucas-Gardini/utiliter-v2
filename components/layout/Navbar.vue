@@ -35,6 +35,11 @@ const links = [
 			icon: "i-heroicons-clock",
 			to: "/utils/time-calculator",
 		},
+		{
+			label: "MySQL EXPLAIN",
+			icon: "i-heroicons-circle-stack",
+			to: "/utils/mysql-explain",
+		},
 	],
 	[
 		{
