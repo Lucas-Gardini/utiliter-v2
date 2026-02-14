@@ -62,6 +62,11 @@ const links = [
 			to: "/generators/password",
 		},
 		{
+			label: "Slug",
+			icon: "i-heroicons-link",
+			to: "/generators/slug-generator",
+		},
+		{
 			label: "CPF/CNPJ",
 			icon: "i-heroicons-clipboard-document-list",
 			to: "/generators/cpf-cnpj-generator",

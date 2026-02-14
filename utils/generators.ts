@@ -10,6 +10,21 @@ export const documents = {
 
 export const documentsKeys = Object.keys(documents);
 
+export function generateSlug(text: string): string {
+	if (!text || typeof text !== "string") return "";
+	const normalized = text
+		.trim()
+		.toLowerCase()
+		.normalize("NFD")
+		.replace(/\p{Diacritic}/gu, "");
+	const slug = normalized
+		.replace(/[\s_]+/g, "-")
+		.replace(/[^\p{L}\p{N}-]/gu, "")
+		.replace(/-+/g, "-")
+		.replace(/^-|-$/g, "");
+	return slug;
+}
+
 export function generateDocumentByType(
 	type: string,
 	formatted?: boolean
