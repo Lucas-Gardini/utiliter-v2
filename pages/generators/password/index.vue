@@ -1,84 +1,96 @@
 <script setup lang="ts">
-import { Types } from "mongoose";
-import { v4 } from "uuid";
-
 const toast = useToast();
 
+const LENGTH_MIN = 8;
+const LENGTH_MAX = 128;
+const LENGTH_DEFAULT = 16;
+
 const formData = reactive({
-	text: "",
-	type: "SHA-1" as "SHA-1" | "SHA-256" | "SHA-512" | "ObjectId" | "uuid",
-	output: "minúsculo",
+	length: LENGTH_DEFAULT,
+	uppercase: true,
+	lowercase: true,
+	numbers: true,
+	symbols: true,
+	excludeSimilar: false,
 	generated: "",
 });
 
+const CHAR_LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
+const CHAR_UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const CHAR_NUMBERS = "0123456789";
+const CHAR_SYMBOLS = "!@#$%^&*()_+-=[]{}|;:'\",.<>?/`~";
+
+function getCharset(): string {
+	let charset = "";
+	if (formData.lowercase) charset += formData.excludeSimilar ? CHAR_LOWERCASE.replace(/[ol]/g, "") : CHAR_LOWERCASE;
+	if (formData.uppercase) charset += formData.excludeSimilar ? CHAR_UPPERCASE.replace(/[OI]/g, "") : CHAR_UPPERCASE;
+	if (formData.numbers) charset += formData.excludeSimilar ? CHAR_NUMBERS.replace(/[01]/g, "") : CHAR_NUMBERS;
+	if (formData.symbols) charset += CHAR_SYMBOLS;
+
+	return charset;
+}
+
+function generatePassword(): string {
+	const charset = getCharset();
+	if (!charset) return "";
+
+	const length = Math.max(LENGTH_MIN, Math.min(LENGTH_MAX, formData.length));
+	const array = new Uint32Array(length);
+	crypto.getRandomValues(array);
+
+	let result = "";
+	for (let i = 0; i < length; i++) {
+		const idx = array[i] ?? 0;
+		result += charset.charAt(idx % charset.length);
+	}
+	return result;
+}
+
 function resetForm() {
-	formData.type = "SHA-1";
-	formData.output = "minúsculo";
-	formData.text = "";
+	formData.length = LENGTH_DEFAULT;
+	formData.uppercase = true;
+	formData.lowercase = true;
+	formData.numbers = true;
+	formData.symbols = true;
+	formData.excludeSimilar = false;
 	formData.generated = "";
 }
 
-async function calculateHash(
-	text: string,
-	digest: "SHA-1" | "SHA-256" | "SHA-512" | "ObjectId" | "uuid"
-) {
-	if (digest === "ObjectId") {
-		formData.text = "";
-
-		const objectId = new Types.ObjectId();
-		return objectId.toString();
+function doGenerate() {
+	const length = Number(formData.length);
+	if (length < LENGTH_MIN || length > LENGTH_MAX) {
+		toast.add({
+			title: "Tamanho inválido",
+			description: `A quantidade de caracteres deve estar entre ${LENGTH_MIN} e ${LENGTH_MAX}.`,
+			icon: "i-heroicons-exclamation-triangle",
+			color: "amber",
+		});
+		return;
 	}
 
-	if (digest === "uuid") {
-		formData.text = "";
-
-		const uuid = v4();
-		return uuid;
+	const charset = getCharset();
+	if (!charset) {
+		toast.add({
+			title: "Atenção",
+			description: "Selecione ao menos um tipo de caractere (maiúsculas, minúsculas, números ou símbolos).",
+			icon: "i-heroicons-exclamation-triangle",
+			color: "amber",
+		});
+		return;
 	}
 
-	const codificador = new TextEncoder();
-	const bufferDados = codificador.encode(text);
-	const bufferHash = await window.crypto.subtle.digest(digest, bufferDados);
-	const arrayHash = Array.from(new Uint8Array(bufferHash));
-	const hashHex = arrayHash
-		.map((byte) => byte.toString(16).padStart(2, "0"))
-		.join("");
-	return hashHex;
-}
-
-async function generateHash() {
 	try {
-		const text = formData.text;
-		const digest = formData.type;
-		const output = formData.output;
-
-		const hash = await calculateHash(text, digest);
-		if (hash) {
-			if (output === "base64") {
-				formData.generated = btoa(hash);
-				return;
-			}
-
-			formData.generated =
-				output === "maiúsculo" ? hash.toUpperCase() : hash;
-		} else {
-			toast.add({
-				title: "Erro",
-				description: "Não foi possível gerar a hash",
-				icon: "i-heroicons-x-circle",
-				color: "red",
-			});
-		}
-	} catch (error: any) {
+		formData.generated = generatePassword();
+	} catch (error: unknown) {
 		toast.add({
 			title: "Erro",
-			description:
-				"Não foi possível gerar a hash\n\n" + String(error.message),
+			description: "Não foi possível gerar a senha.\n\n" + String((error as Error).message),
 			icon: "i-heroicons-x-circle",
 			color: "red",
 		});
 	}
 }
+
 </script>
 
 <template>
@@ -89,7 +101,69 @@ async function generateHash() {
 			</div>
 		</template>
 
-		<div class="min-h-32">EM BREVE!</div>
+		<div class="min-h-32">
+			<div class="flex flex-col gap-1 w-full" v-auto-animate>
+				<div class="flex items-center gap-4 flex-wrap">
+					<div class="form-control min-w-[50px] max-w-[200px]">
+						<label>Tamanho ({{ LENGTH_MIN }}-{{ LENGTH_MAX }})</label>
+						<UInput
+							v-model.number="formData.length"
+							type="number"
+							:min="LENGTH_MIN"
+							:max="LENGTH_MAX"
+							icon="i-heroicons-hashtag"
+						/>
+					</div>
+				</div>
+
+				<div class="flex items-start gap-4 flex-wrap gap-y-2">
+					<UCheckbox
+						v-model="formData.uppercase"
+						label="Maiúsculas (A-Z)"
+						class="w-auto"
+					/>
+					<UCheckbox
+						v-model="formData.lowercase"
+						label="Minúsculas (a-z)"
+						class="w-auto"
+					/>
+					<UCheckbox
+						v-model="formData.numbers"
+						label="Números (0-9)"
+						class="w-auto"
+					/>
+					<UCheckbox
+						v-model="formData.symbols"
+						label="Símbolos (!@#...)"
+						class="w-auto"
+					/>
+					<UCheckbox
+						v-model="formData.excludeSimilar"
+						label="Excluir caracteres parecidos (0, O, 1, l, I)"
+						class="w-auto"
+					/>
+				</div>
+
+				<div class="flex items-center gap-4 flex-wrap">
+					<div class="form-control w-full">
+						<label>Senha gerada</label>
+						<UInput
+							v-model="formData.generated"
+							icon="i-heroicons-key"
+							disabled
+						/>
+						<UButton
+							color="sky"
+							variant="link"
+							class="ml-auto"
+							@click="fallbackCopyTextToClipboard(formData.generated)"
+						>
+							Copiar
+						</UButton>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<template #footer>
 			<div class="flex justify-end gap-5 h-8">
@@ -103,7 +177,6 @@ async function generateHash() {
 					:trailing="false"
 					@click="resetForm"
 				/>
-
 				<UButton
 					icon="i-heroicons-pencil-square"
 					size="md"
@@ -112,7 +185,7 @@ async function generateHash() {
 					label="Gerar"
 					style="color: white"
 					:trailing="false"
-					@click="generateHash"
+					@click="doGenerate"
 				/>
 			</div>
 		</template>
