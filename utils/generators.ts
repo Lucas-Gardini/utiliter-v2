@@ -34,28 +34,37 @@ function generateRandomNumber(min: number, max: number) {
 export function generateLoremIpsum(
 	paragraphs: number,
 	wordsPerParagraph: number,
-	limitCaracters?: number
+	limitCharacters?: number
 ) {
-	const maxSentences = generateRandomNumber(2, 20);
+	const numParagraphs = Math.max(1, Math.floor(Number(paragraphs)));
+	const maxWordsPerParagraph = Math.max(1, Math.floor(Number(wordsPerParagraph)));
+	const limitChars = Number(limitCharacters);
 
 	const lorem = new LoremIpsum({
 		sentencesPerParagraph: {
-			max: maxSentences,
+			max: Math.min(20, Math.ceil(maxWordsPerParagraph / 5)),
 			min: 2,
 		},
 		wordsPerSentence: {
-			max: wordsPerParagraph,
+			max: Math.min(25, Math.ceil(maxWordsPerParagraph / 2)),
 			min: 2,
 		},
 		seed: String(generateRandomNumber(1, 999)),
 	});
 
-	let text = lorem.generateParagraphs(paragraphs);
+	const paragraphBlocks: string[] = [];
 
-	if (limitCaracters) {
-		if (Number(limitCaracters) === 0) return text;
+	for (let i = 0; i < numParagraphs; i++) {
+		let para = lorem.generateParagraphs(1);
+		const words = para.split(/\s+/).filter(Boolean);
+		const trimmed = words.slice(0, maxWordsPerParagraph).join(" ");
+		paragraphBlocks.push(trimmed);
+	}
 
-		text = text.slice(0, limitCaracters);
+	let text = paragraphBlocks.join("\n\n");
+
+	if (limitChars > 0) {
+		text = text.slice(0, limitChars);
 	}
 
 	return text;
