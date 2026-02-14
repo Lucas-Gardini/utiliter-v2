@@ -69,61 +69,12 @@ watch(
 
 			<div v-if="selectedTab === 0" class="flex flex-col gap-1 w-full">
 				<h1 class="text-lg font-bold">Encoder</h1>
-
+				<p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+					Cole a URL normal (decodificada) e veja o resultado codificado.
+				</p>
 				<div class="flex items-center space-x-0 lg:space-x-4 flex-wrap">
 					<div class="form-control w-[100%] lg:w-[49%]">
-						<label>Encoded URL</label>
-
-						<UInput
-							v-model="formData.encodedURL"
-							icon="i-heroicons-receipt-percent"
-						/>
-
-						<UButton
-							color="sky"
-							variant="link"
-							class="ml-auto"
-							@click="
-								fallbackCopyTextToClipboard(formData.encodedURL)
-							"
-						>
-							Copiar
-						</UButton>
-					</div>
-
-					<div class="form-control w-[100%] lg:w-[49%]">
-						<label>Decoded URL</label>
-
-						<UInput
-							v-model="formData.viewDecodedURL"
-							icon="i-heroicons-link"
-							disabled
-						/>
-
-						<UButton
-							color="sky"
-							variant="link"
-							class="ml-auto"
-							@click="
-								fallbackCopyTextToClipboard(
-									formData.viewDecodedURL
-								)
-							"
-						>
-							Copiar
-						</UButton>
-					</div>
-				</div>
-			</div>
-
-			<!-- <UDivider /> -->
-
-			<div v-else class="flex flex-col gap-1 w-full">
-				<h1 class="text-lg font-bold">Decoder</h1>
-
-				<div class="flex items-center space-x-0 lg:space-x-4 flex-wrap">
-					<div class="form-control w-[100%] lg:w-[49%]">
-						<label>Decoded URL</label>
+						<label>URL (decodificada)</label>
 
 						<UInput
 							v-model="formData.decodedURL"
@@ -143,7 +94,7 @@ watch(
 					</div>
 
 					<div class="form-control w-[100%] lg:w-[49%]">
-						<label>Encoded URL</label>
+						<label>URL codificada</label>
 
 						<UInput
 							v-model="formData.viewEncodedURL"
@@ -158,6 +109,57 @@ watch(
 							@click="
 								fallbackCopyTextToClipboard(
 									formData.viewEncodedURL
+								)
+							"
+						>
+							Copiar
+						</UButton>
+					</div>
+				</div>
+			</div>
+
+			<div v-else class="flex flex-col gap-1 w-full">
+				<h1 class="text-lg font-bold">Decoder</h1>
+				<p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+					Cole a URL codificada e veja o resultado decodificado.
+				</p>
+				<div class="flex items-center space-x-0 lg:space-x-4 flex-wrap">
+					<div class="form-control w-[100%] lg:w-[49%]">
+						<label>URL codificada</label>
+
+						<UInput
+							v-model="formData.encodedURL"
+							icon="i-heroicons-receipt-percent"
+						/>
+
+						<UButton
+							color="sky"
+							variant="link"
+							class="ml-auto"
+							@click="
+								fallbackCopyTextToClipboard(formData.encodedURL)
+							"
+						>
+							Copiar
+						</UButton>
+					</div>
+
+					<div class="form-control w-[100%] lg:w-[49%]">
+						<label>URL (decodificada)</label>
+
+						<UInput
+							v-model="formData.viewDecodedURL"
+							icon="i-heroicons-link"
+							disabled
+						/>
+
+						<UButton
+							color="sky"
+							variant="link"
+							class="ml-auto"
+							@click="
+								fallbackCopyTextToClipboard(
+									formData.viewDecodedURL
 								)
 							"
 						>
