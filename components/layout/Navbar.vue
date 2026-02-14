@@ -67,6 +67,11 @@ const links = [
 			to: "/generators/slug-generator",
 		},
 		{
+			label: "QR Code",
+			icon: "i-heroicons-qr-code",
+			to: "/generators/qr-code-generator",
+		},
+		{
 			label: "CPF/CNPJ",
 			icon: "i-heroicons-clipboard-document-list",
 			to: "/generators/cpf-cnpj-generator",
