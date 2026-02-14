@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { DateTime } from "luxon";
+
 interface IHorarios {
 	entrada: string;
 	saida: string;
 	resultado: string;
 }
+
+const selectedTab = ref(0);
 
 const horarios = ref<IHorarios[]>([
 	{
@@ -14,6 +18,34 @@ const horarios = ref<IHorarios[]>([
 ]);
 
 const totalElapsed = ref("00:00");
+
+const formDataDatas = reactive({
+	inicio: "",
+	fim: "",
+});
+
+const diffDatasResultado = computed(() => {
+	const inicio = formDataDatas.inicio?.trim();
+	const fim = formDataDatas.fim?.trim();
+	if (!inicio || !fim) return "";
+
+	const dtInicio = DateTime.fromISO(inicio);
+	const dtFim = DateTime.fromISO(fim);
+	if (!dtInicio.isValid || !dtFim.isValid) return "Data inválida";
+
+	const diff = dtFim.diff(dtInicio, ["days", "hours", "minutes"]);
+	const d = Math.floor(diff.days);
+	const h = Math.floor(diff.hours);
+	const m = Math.floor(diff.minutes);
+
+	if (d < 0 || h < 0 || m < 0) return "Data fim deve ser após data início";
+
+	const partes: string[] = [];
+	if (d > 0) partes.push(`${d} ${d === 1 ? "dia" : "dias"}`);
+	partes.push(`${h} ${h === 1 ? "hora" : "horas"}`);
+	if (m > 0) partes.push(`${m} ${m === 1 ? "minuto" : "minutos"}`);
+	return partes.join(" e ");
+});
 
 function addTimeLine(index?: number) {
 	if (index === undefined)
@@ -78,17 +110,30 @@ watch(
 	},
 	{ deep: true }
 );
-
-//
 </script>
+
 <template>
 	<UCard>
 		<template #header>
-			<div class="h-8 font-black text-xl ml-10 sm:ml-0">Calculadora de Tempo</div>
+			<div class="h-8 font-black text-xl ml-10 sm:ml-0">
+				Calculadora de Tempo
+			</div>
 		</template>
 
 		<div class="min-h-32">
-			<div class="flex flex-col w-full" v-auto-animate>
+			<UTabs
+				v-model="selectedTab"
+				:items="[
+					{ label: 'Somente horas' },
+					{ label: 'Diferença de datas (dias e horas)' },
+				]"
+				class="w-full mb-5"
+			/>
+
+			<div v-if="selectedTab === 0" class="flex flex-col w-full" v-auto-animate>
+				<p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+					Calcule a diferença entre horários de entrada e saída (somente horas e minutos).
+				</p>
 				<div class="flex flex-row items-start gap-4 flex-wrap w-[100%] sm:w-[70%] md:w-[50%]">
 					<div v-for="(i, o) in horarios" :key="o" class="flex flex-row items-center gap-2 w-full">
 						<div class="form-control min-w-[30%]">
@@ -119,8 +164,6 @@ watch(
 								<UButton class="w-[100px]" v-else @click="() => horarios.splice(o, 1)">
 									<Icon name="ph:minus"></Icon> Remover
 								</UButton>
-
-								<!-- Button to add new line below the index -->
 								<UButton v-if="o !== horarios.length - 1" @click="() => addTimeLine(o - 1)">
 									<Icon name="ph:arrow-down-left-bold"></Icon> Adicionar abaixo
 								</UButton>
@@ -150,12 +193,42 @@ watch(
 					</div>
 				</div>
 			</div>
+
+			<div v-else class="flex flex-col gap-1 w-full" v-auto-animate>
+				<p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+					Calcule a diferença entre duas datas e horários (dias, horas e minutos).
+				</p>
+				<div class="flex items-center gap-4 flex-wrap">
+					<div class="form-control min-w-[200px] max-w-[320px]">
+						<label>Data e hora início</label>
+						<UInput
+							v-model="formDataDatas.inicio"
+							type="datetime-local"
+							icon="i-heroicons-calendar-days"
+						/>
+					</div>
+					<div class="form-control min-w-[200px] max-w-[320px]">
+						<label>Data e hora fim</label>
+						<UInput
+							v-model="formDataDatas.fim"
+							type="datetime-local"
+							icon="i-heroicons-calendar-days"
+						/>
+					</div>
+				</div>
+				<div class="form-control w-full max-w-[400px]">
+					<label>Resultado (dias e horas)</label>
+					<UInput
+						:model-value="diffDatasResultado"
+						disabled
+						icon="i-heroicons-clock"
+					/>
+				</div>
+			</div>
 		</div>
-		<span class="flex ml-auto w-[100%] text-right justify-start">
-			Com ajuda de:&nbsp;<a class="text-blue-500 underline" href="https://github.com/luizfx22" target="_blank">Luiz Gomes</a>
-		</span>
 	</UCard>
 </template>
+
 <style lang="scss">
 ::-webkit-datetime-edit-second-field {
 	background: #fff;
